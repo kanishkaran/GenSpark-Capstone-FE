@@ -86,7 +86,6 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    console.log(this.currUserSubject.value);
     return this.currUserSubject.value?.roleName === 'Admin';
   }
 

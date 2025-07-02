@@ -17,6 +17,7 @@
                     <label>File Name:</label>
                     <span>{{ data.file.fileName }}</span>
                 </div>
+                @if (!search) {
                 <div class="info-item">
                     <label>Category:</label>
                     <span class="category-badge">{{ data.file.categoryName }}</span>
@@ -26,6 +27,7 @@
                     <span>{{ data.file.uploadedByName }}</span>
                 </div>
 
+                }
             </div>
         </div>
 
@@ -38,10 +40,17 @@
                 <p>{{ data.summary.summary }}</p>
             </div>
             <div class="summary-meta">
+
                 <small>
                     <mat-icon>schedule</mat-icon>
                     Generated on {{ Time | date:'medium' }}
                 </small>
+                @if(search) {
+                <small>
+                    <mat-icon>score</mat-icon>
+                    {{data.score}}
+                </small>
+                }
             </div>
         </div>
     </mat-dialog-content>

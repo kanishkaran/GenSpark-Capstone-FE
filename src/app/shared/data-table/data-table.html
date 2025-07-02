@@ -2,7 +2,7 @@
 
   <div class="table-container w-100 px-4 py-4 rounded-4 shadow-lg bg-white">
 
-   
+
     @if (showSearch || isAdmin) {
     <div class="table-header row g-4 align-items-end mb-4">
       @if (showSearch) {
@@ -24,17 +24,24 @@
         </div>
 
         @if (!disableAdd) {
-          <button mat-raised-button (click)="onAdd()" class="add-button fw-bold d-flex align-items-center gap-2">
-            <mat-icon class="add-icon">add</mat-icon>
-            <span class="text-white">Add New</span>
-          </button>
+        <button mat-raised-button (click)="onAdd()" class="add-button fw-bold d-flex align-items-center gap-2">
+          <mat-icon class="add-icon">add</mat-icon>
+          <span class="text-white">Add New</span>
+        </button>
+        }
+        @else {
+        <div class="toggle-container">
+          <mat-slide-toggle [(ngModel)]="vectorSearch" (change)="onSearchModeChange()" class="custom-toggle me-2">
+            <span class="toggle-label">Semantic Search</span>
+          </mat-slide-toggle>
+        </div>
         }
       </div>
       }
     </div>
     }
 
-   
+
     <div class="table-wrapper position-relative rounded-3 overflow-hidden" [class.loading]="loading">
       @if (loading) {
       <div class="loading-overlay">
@@ -66,7 +73,8 @@
             <td mat-cell *matCellDef="let element" [attr.data-label]="column.label" class="table-data-cell">
               @if (column.pipe === 'boolean') {
               <div class="status-indicator">
-                @if (!(column.key == "canUpload" || column.key == "canDownload" || column.key == "isActive" || column.key == "canSummarise")) {
+                @if (!(column.key == "canUpload" || column.key == "canDownload" || column.key == "isActive" ||
+                column.key == "canSummarise")) {
 
                 <mat-icon [class]="!element[column.key] ? 'status-active' : 'status-inactive'">
                   {{ !element[column.key] ? 'check_circle' : 'cancel' }}

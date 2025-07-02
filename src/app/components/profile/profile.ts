@@ -49,6 +49,7 @@ export class Profile {
 
     this.authService.currUser$.subscribe(res => {
       this.currentUser = res.username;
+      this.roleName = res.roleName;
       console.log(this.currentUser)
     })
   }
@@ -63,6 +64,7 @@ export class Profile {
     }
     else {
       this.notificationService.showWarning("Un Authorised Access")
+      return;
     }
     console.log(this.userName, this.currentUser)
 
@@ -74,9 +76,12 @@ export class Profile {
         console.log(res)
         this.employee = res.data;
 
-        this.userService.getById(this.userName).subscribe((res : any) => {
+        if(this.isAdmin){
+          this.userService.getById(this.userName).subscribe((res : any) => {
           this.roleName = res.data.roleName;
         })
+        }
+        
         if (this.employee.email == '' || this.employee.firstName == '' || this.employee.lastName == '') {
           this.notificationService.showInfo('Profile Not Found. Profile Completion Needed')
           this.employee.isActive = true;

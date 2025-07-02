@@ -49,6 +49,7 @@ export class DataTable implements OnInit {
   @Input() disableAdd: boolean = false;
   @Output() queryChanged = new EventEmitter<QueryParams>();
   @Output() addClicked = new EventEmitter<void>();
+  @Output() searchModeToggle = new EventEmitter();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -59,6 +60,7 @@ export class DataTable implements OnInit {
   dataSource = new MatTableDataSource<any>([]);
   displayedColumns: string[] = [];
   includeInactive: boolean = false;
+  vectorSearch: boolean = false;
 
 
   ngOnInit(): void {
@@ -69,7 +71,7 @@ export class DataTable implements OnInit {
     }
 
     this.searchSubject
-      .pipe(debounceTime(400), distinctUntilChanged())
+      .pipe(debounceTime(2000), distinctUntilChanged())
       .subscribe(search => {
         this.emitQueryChange({ search });
       });
@@ -111,6 +113,11 @@ export class DataTable implements OnInit {
 
   onIncludeInactiveChange(): void {
     this.emitQueryChange({ IncludeInactive: this.includeInactive });
+  }
+
+  onSearchModeChange(){
+    console.log(this.vectorSearch)
+    this.searchModeToggle.emit(this.vectorSearch);
   }
 
 

@@ -22,13 +22,14 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './file-summary-dialog.css'
 })
 export class FileSummaryDialog {
-
+  search: boolean =false;
   
   constructor(
     public dialogRef: MatDialogRef<FileSummaryDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    
+    this.search = data.isSearch;
+    console.log(data)
   }
   
   public get Time() : number {

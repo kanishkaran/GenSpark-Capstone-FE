@@ -16,3 +16,9 @@ export interface FileSummary{
   fileName: string
   summary: string
 }
+
+export interface semanticSearchFile {
+  fileName: string
+  fileSummary: string
+  confidenceScore: number
+}

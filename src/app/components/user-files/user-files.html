@@ -22,7 +22,7 @@
             </div>
         </div>
 
-       
+
         <div class="profile-section">
             <mat-card class="profile-card">
                 <mat-card-content>
@@ -135,14 +135,20 @@
                 </mat-card-content>
             </mat-card>
         </div>
-                      
+
         @if (loading) {
         <div class="loading-overlay">
             <div class="loading-content">
-                <mat-spinner diameter="60"></mat-spinner>
-                <p>Summary is being generated....</p>
+                <video autoplay loop muted playsinline class="loading-animation">
+                    <source src="/animations/summary-loader.webm" type="video/webm" />
+
+                    Your browser does not support the video tag.
+                </video>
+
+                <p>Chill, While we generate the summary for you..</p>
             </div>
         </div>
         }
+
     </div>
 </div>

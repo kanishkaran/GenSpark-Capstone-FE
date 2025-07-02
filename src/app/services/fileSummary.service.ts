@@ -16,4 +16,10 @@ export class FileSummaryService{
             params
         })
     }
+
+    semanticSearch(query: any){
+        console.log(query)
+        let params = new HttpParams().set('query',query)
+        return this.http.get(`${this.apiUrl}/${this.endpoint}/`, {params})
+    }
 }

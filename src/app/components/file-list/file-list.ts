@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DataTable, TableAction, TableColumn } from '../../shared/data-table/data-table';
-import { FileArchive } from '../../models/fileArchive.model';
+import { FileArchive, semanticSearchFile } from '../../models/fileArchive.model';
 import { FileVersion } from '../../models/fileVersion.model';
 import { FileArchiveService } from '../../services/fileUpload.service';
 import { FileVersionService } from '../../services/fileVersion.service';
@@ -10,6 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { QueryParams } from '../../models/apiResponse';
 import { NotificationService } from '../../services/notification.service';
 import { FileVersionDialog } from '../dialogs/file-version-dialog/file-version-dialog';
+import { FileSummaryService } from '../../services/fileSummary.service';
+import { FileSummaryDialog } from '../dialogs/file-summary-dialog/file-summary-dialog';
 
 @Component({
   selector: 'app-file-list',
@@ -22,12 +24,13 @@ export class FileList {
   FileArchives: FileArchive[] = [];
   fileVersions: FileVersion[] = [];
   isAdmin: boolean = false;
-
+  searchLoading: boolean = false;
 
   totalCount: number = 0;
   pageSize: number = 0;
   loading = false;
-  currentQuery: QueryParams = { page: 1, pageSize: 10 }
+  currentQuery: QueryParams = { page: 1, pageSize: 10 };
+  searchMode: boolean = false;
 
   columns: TableColumn[] = [
     { key: 'fileName', label: 'File Name', sortable: true },
@@ -65,6 +68,7 @@ export class FileList {
   constructor(
     private fileArchiveService: FileArchiveService,
     private fileVersionService: FileVersionService,
+    private fileSummaryService: FileSummaryService,
     private notificationService: NotificationService,
     private authService: AuthService,
     private dialog: MatDialog
@@ -77,8 +81,38 @@ export class FileList {
   }
   onQueryChanged($event: QueryParams) {
     console.log($event)
-    this.currentQuery = { ...this.currentQuery, ...$event };
-    this.loadFileArchives();
+    if (!this.searchMode) {
+      this.currentQuery = { ...this.currentQuery, ...$event };
+      this.loadFileArchives();
+    }
+    else {
+      this.searchLoading = true;
+      this.fileSummaryService.semanticSearch($event.search).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.openFileSummaryDialog(response);
+
+          this.searchLoading = false;
+        }
+      })
+    }
+  }
+
+  onSearchModeToggle(searchMode: any) {
+    console.log(searchMode)
+    this.searchMode = searchMode;
+  }
+
+  openFileSummaryDialog(data: any) {
+    this.dialog.open(FileSummaryDialog, {
+      width: '800px',
+      data: {
+        summary: { summary: data.fileSummary },
+        file: { fileName: data.fileName },
+        score: data.confidenceScore,
+        isSearch: this.searchMode
+      }
+    })
   }
 
   loadFileArchives() {
