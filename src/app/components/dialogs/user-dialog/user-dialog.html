@@ -35,7 +35,7 @@
             <div class="col-md-4">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>User Name</mat-label>
-                    <input matInput [(ngModel)]="createFormModel.username" name="username" required autocomplete="off"
+                    <input matInput [(ngModel)]="createFormModel.username" name="username" required autocomplete="off" minlength="3"
                         placeholder="Enter your user name" />
                 </mat-form-field>
             </div>
@@ -46,7 +46,7 @@
             <div class="col-md-4">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Password</mat-label>
-                    <input matInput [(ngModel)]="createFormModel.password" name="password" required autocomplete="off"
+                    <input matInput [(ngModel)]="createFormModel.password" name="password" required autocomplete="off" minlength="6"
                         placeholder="Enter your password" />
                 </mat-form-field>
             </div>

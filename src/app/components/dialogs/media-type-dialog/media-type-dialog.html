@@ -6,7 +6,7 @@
         <div class="col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Type Name</mat-label>
-            <input matInput [(ngModel)]="formModel.typeName" name="typeName" required placeholder="Enter Type Name"
+            <input matInput [(ngModel)]="formModel.typeName" name="typeName" required placeholder="Enter Type Name" minlength="3"
               autocomplete="off" />
             @if (mediaForm.submitted && !formModel.typeName) {
               <mat-error >Type Name is required</mat-error>
@@ -17,7 +17,7 @@
         <div class="col-md-6">
           <mat-form-field appearance="outline" class="form-field w-100">
             <mat-label>Extension</mat-label>
-            <input matInput [(ngModel)]="formModel.extension" name="extension" required placeholder="e.g. .pdf"
+            <input matInput [(ngModel)]="formModel.extension" name="extension" required placeholder="e.g. .pdf" minlength="3"
               autocomplete="off" />
               @if (mediaForm.submitted && !formModel.extension) {
               

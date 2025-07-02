@@ -18,7 +18,7 @@ export class ResetPasswordDialog {
 
   constructor(private dialogRef: MatDialogRef<ResetPasswordDialog>) {
     this.passwordForm = new FormGroup({
-      oldPassword: new FormControl(null, [Validators.required]),
+      oldPassword: new FormControl(null, [Validators.required, Validators.minLength(3)]),
       newPassword: new FormControl(null, [Validators.required, passwordStrengthValidator()])
     });
   }

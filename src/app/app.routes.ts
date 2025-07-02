@@ -7,13 +7,14 @@ import { MediaTypesList } from './components/media-types-list/media-types-list';
 import { UserList } from './components/user-list/user-list';
 import { AccessList } from './components/access-list/access-list';
 import { MainLayoutComponent } from './shared/nav/nav';
-import { DashboardComponent } from './components/dashboard/dashboard';
+import { Dashboard } from './components/dashboard/dashboard';
 import { UploadPage } from './components/upload-page/upload-page';
 import { Profile } from './components/profile/profile';
 import { UserFiles } from './components/user-files/user-files';
 import { UserCategory } from './components/user-category/user-category';
 import { AuthGaurd } from './guards/auth-guard';
 import { AdminGuard } from './guards/admin-guard';
+import { FileList } from './components/file-list/file-list';
 
 
 
@@ -24,7 +25,7 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [AuthGaurd],
     children: [
-      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard', component: Dashboard },
       { path: 'files', component: UserFiles },
       { path: 'upload', component: UploadPage },
       { path: 'user-category', component: UserCategory },
@@ -36,6 +37,7 @@ export const routes: Routes = [
           { path: 'role', component: RoleList },
           { path: 'roleCategory', component: RoleCategoryList },
           { path: 'users', component: UserList },
+          { path: 'files', component: FileList },
           { path: 'users/:uname', component: Profile },
           { path: 'access', component: AccessList },
       ]},

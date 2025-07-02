@@ -34,7 +34,8 @@ export class Profile {
   router = inject(ActivatedRoute);
   userName: string = '';
   isAdmin: boolean = false;
-  currentUser: string = '';
+  currentUser: any;
+  roleName: string = ''
   employee: Employee = {};
   shouldCompleteProfile: boolean = false;
 
@@ -46,15 +47,17 @@ export class Profile {
     private dialog: MatDialog
   ) {
 
+    this.authService.currUser$.subscribe(res => {
+      this.currentUser = res.username;
+      this.roleName = res.roleName;
+      console.log(this.currentUser)
+    })
   }
 
   ngOnInit() {
     this.userName = this.router.snapshot.params['uname']
     this.isAdmin = this.authService.isAdmin();
 
-    this.authService.currUser$.subscribe(res => {
-      this.currentUser = res.username;
-    })
 
     if (this.isAdmin || this.userName == this.currentUser) {
       this.loadEmployee();

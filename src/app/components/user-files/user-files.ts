@@ -11,16 +11,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DatePipe } from '@angular/common';
 import { FileSummaryService } from '../../services/fileSummary.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FileSummaryDialog } from '../dialogs/file-summary-dialog/file-summary-dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
+import { FileVersionDialog } from '../dialogs/file-version-dialog/file-version-dialog';
 
 @Component({
   selector: 'app-user-files',
-  imports: [MatIconModule, MatCardModule, MatMenuModule, MatTooltipModule, DatePipe, MatProgressSpinnerModule],
+  imports: [MatIconModule, MatCardModule, MatMenuModule, MatTooltipModule, MatProgressSpinnerModule],
   templateUrl: './user-files.html',
   styleUrl: './user-files.css'
 })
@@ -46,26 +46,23 @@ export class UserFiles {
   }
 
   ngOnInit() {
-    this.authService.currUser$.subscribe({
-      next: (result) => {
-        console.log(result)
-        this.currentUser = result;
-      },
-      error: (err) => {
-        this.notificationService.showError(err.errors.error.fields)
-      }
-    });
+  this.authService.currUser$.subscribe({
+    next: (result) => {
+      this.currentUser = result;
+      this.loadEmployee(); 
+    },
+    error: (err) => {
+      this.notificationService.showError(err.errors.error.fields);
+    }
+  });
+}
 
-
-    this.loadEmployee()
-    this.loadFileArchives()
-
-  }
 
   loadEmployee() {
     this.employeeService.getAllEmployee({ email: this.currentUser.username }).subscribe({
       next: (response: any) => {
         this.currEmployee = response.data.data.$values[0];
+        this.loadFileArchives();
         console.log(this.currEmployee)
       },
       error: (err) => {
@@ -75,7 +72,7 @@ export class UserFiles {
   }
 
   loadFileArchives() {
-
+    if (!this.currEmployee?.firstName) return;
     this.fileArchiveService.getAll({ page: 1, pageSize: 100 }).subscribe({
       next: (response: any) => {
         this.myFileArchives = response.data.data.$values;
@@ -87,19 +84,27 @@ export class UserFiles {
 
   }
 
-  getFileVersionsForArchive(archiveId: string) {
-    this.fileVersionService.getByArchiveId(archiveId).subscribe({
+  openFileVersionDialog() {
+    this.dialog.open(FileVersionDialog, {
+      data: { versions: this.fileVersions }
+    })
+  }
+
+  getFileVersionsForArchive(id: string) {
+
+    this.fileVersionService.getByArchiveId(id).subscribe({
       next: (response: any) => {
-        console.log(response)
         this.fileVersions = response.data.$values;
-        console.log(this.fileVersions)
+        if (this.fileVersions.length > 0) {
+          this.openFileVersionDialog();
+        } else {
+          this.notificationService.showInfo('No versions available for this file.');
+        }
       },
       error: (err) => {
-        this.notificationService.showError(err.errors.error.fields)
+        this.notificationService.showError(err.errors.error.fields);
       }
-    })
-
-
+    });
   }
 
   downloadFile(fileName: string) {
@@ -122,25 +127,7 @@ export class UserFiles {
     });
   }
 
-  downloadFileVersion(fileVersion: FileVersion) {
-    this.fileArchiveService.downloadFile(fileVersion.fileName, fileVersion.versionNumber).subscribe({
-      next: (blob) => {
-        console.log(blob)
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `V${fileVersion.versionNumber}_${fileVersion.fileName}`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-        this.notificationService.showSuccess(` Version ${fileVersion.versionNumber} downloaded successfully`);
-      },
-      error: () => {
-        this.notificationService.showError('Failed to download file version');
-      }
-    });
-  }
+
 
   getFileSummary(file: FileArchive) {
     this.loading = true;

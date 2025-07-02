@@ -83,10 +83,11 @@ export class UserCategory implements OnInit {
               let canDownload = false;
               let canUpload = false;
 
+              if (cat.access === 'read-only') {
+                canDownload = true;
+              } 
               if (rc) {
-                if (cat.access === 'read-only') {
-                  canDownload = rc.canDownload;
-                } else if (cat.access === 'Write') {
+                if (cat.access === 'Write') {
                   canDownload = rc.canDownload;
                   canUpload = rc.canUpload;
                 }

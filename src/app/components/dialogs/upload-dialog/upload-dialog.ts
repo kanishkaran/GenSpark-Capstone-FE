@@ -14,11 +14,11 @@ export class UploadDialog {
     public dialogRef: MatDialogRef<UploadDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    
   }
 
-Success($event : any) {
-  console.log('success', $event)
-}
+  Success($event: any) {
+    console.log('success', $event)
+    this.dialogRef.close('success')
+  }
 
 }

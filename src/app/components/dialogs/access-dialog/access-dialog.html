@@ -1,15 +1,15 @@
 <div class="p-4">
     <h5 class="mb-3">Add Access Level</h5>
-    <form (ngSubmit)="onFormSubmit()" #accessForm="ngForm">
+    <form (ngSubmit)="onFormSubmit()" [formGroup]="accessForm">
 
 
         <mat-form-field appearance="outline" class="form-field w-100">
             <mat-label>Access</mat-label>
-            <input matInput [(ngModel)]="formModel.access" name="access" required placeholder="e.g. write"
-                autocomplete="off" />
-            @if (accessForm.submitted && !formModel.access) {
+            <input matInput name="access" placeholder="e.g. write"
+                formControlName="access" autocomplete="off" />
+            @if (access.touched && access.errors) {
 
-            <mat-error>Access is required</mat-error>
+            <mat-error>Access is required of atleast 3 characters</mat-error>
             }
         </mat-form-field>
 

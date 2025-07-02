@@ -62,6 +62,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       { label: 'Categories', route: '/home/category', icon: 'category' },
       { label: 'Media Types', route: '/home/mediaType', icon: 'file_copy' },
       { label: 'Users', route: '/home/admin/users', icon: 'people', adminOnly: true },
+      { label: 'All Files', route: '/home/admin/files', icon: 'layers', adminOnly: true },
       { label: 'Roles', route: '/home/admin/role', icon: 'security', adminOnly: true },
       { label: 'Access Levels', route: '/home/admin/access', icon: 'vpn_key', adminOnly: true },
       { label: 'Role Permissions', route: '/home/admin/roleCategory', icon: 'admin_panel_settings', adminOnly: true }

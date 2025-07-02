@@ -35,7 +35,7 @@ export class AccessList {
       icon: 'delete',
       color: 'text-danger',
       action: (access) => this.openDeleteDialog(access),
-      showIf: () => this.isAdmin
+      showIf: (access) => this.isAdmin && access.isActive
     }
   ];
 

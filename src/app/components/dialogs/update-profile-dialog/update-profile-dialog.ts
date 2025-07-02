@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { textLengthValidator } from '../../../validators/custom-validators';
+import { bannedWordsValidator, textLengthValidator } from '../../../validators/custom-validators';
 import {  MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,7 +20,7 @@ export class UpdateProfileDialog {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.userForm = new FormGroup({
-      firstName: new FormControl(null, [Validators.required, textLengthValidator()]),
+      firstName: new FormControl(null, [Validators.required, textLengthValidator(), bannedWordsValidator(['test', 'user', 'admin'])]),
       lastName: new FormControl(null, [Validators.required, textLengthValidator()]),
       contactNumber: new FormControl(null, [Validators.required, Validators.minLength(10)]),
       email: new FormControl(null, [Validators.required, Validators.email])

@@ -11,11 +11,11 @@
                   placeholder="Enter category name" disabled/>
             }
             @else {
-                <input matInput [(ngModel)]="formModel.categoryName" name="categoryName" required autocomplete="off"
+                <input matInput [(ngModel)]="formModel.categoryName" name="categoryName" required autocomplete="off" minlength="3"
                   placeholder="Enter category name" />
             }
-            @if (categoryForm.submitted && !formModel.categoryName) {
-            <mat-error>Name is required</mat-error>
+            @if (categoryForm.submitted && !formModel.categoryName ) {
+            <mat-error>Name is required of 3 characters length</mat-error>
             }
           </mat-form-field>
         </div>

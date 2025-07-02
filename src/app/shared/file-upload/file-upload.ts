@@ -112,12 +112,16 @@ export class FileUpload {
           category: this.specificCategory ? this.specificCategory : this.selectedCategories[i]
         };
 
-        this.fileArchiveService.uploadFile(uploadRequest);
-        
-        
+        this.fileArchiveService.uploadFile(uploadRequest).subscribe({
+          next: () => {
+            this.notificationService.showSuccess('Files uploaded successfully');
+          },
+          error: (err) =>{
+            this.notificationService.showError(err.error.errors.fields + ` - ${uploadRequest.file.name}`);
+          }
+        });
       }
 
-      this.notificationService.showSuccess('Files uploaded successfully');
       this.filesUploaded.emit();
       this.clearFiles();
     } catch (error: any) {

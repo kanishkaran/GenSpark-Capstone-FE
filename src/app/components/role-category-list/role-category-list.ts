@@ -200,7 +200,8 @@ export class RoleCategoryList implements OnInit {
         this.loadRoleCategories();
       },
       error: (err) => {
-        this.notificationService.showError(`Failed to add: ${err.message}`);
+        console.log(err)
+        this.notificationService.showError(`Failed to add: ${err.error.errors.fields}`);
       }
     });
   }

@@ -23,16 +23,18 @@
           </mat-slide-toggle>
         </div>
 
-        <button mat-raised-button (click)="onAdd()" class="add-button fw-bold d-flex align-items-center gap-2">
-          <mat-icon class="add-icon">add</mat-icon>
-          <span class="text-white">Add New</span>
-        </button>
+        @if (!disableAdd) {
+          <button mat-raised-button (click)="onAdd()" class="add-button fw-bold d-flex align-items-center gap-2">
+            <mat-icon class="add-icon">add</mat-icon>
+            <span class="text-white">Add New</span>
+          </button>
+        }
       </div>
       }
     </div>
     }
 
-    <!-- Enhanced Table Wrapper -->
+   
     <div class="table-wrapper position-relative rounded-3 overflow-hidden" [class.loading]="loading">
       @if (loading) {
       <div class="loading-overlay">
@@ -64,7 +66,7 @@
             <td mat-cell *matCellDef="let element" [attr.data-label]="column.label" class="table-data-cell">
               @if (column.pipe === 'boolean') {
               <div class="status-indicator">
-                @if (!(column.key == "canUpload" || column.key == "canDownload" || column.key == "isActive")) {
+                @if (!(column.key == "canUpload" || column.key == "canDownload" || column.key == "isActive" || column.key == "canSummarise")) {
 
                 <mat-icon [class]="!element[column.key] ? 'status-active' : 'status-inactive'">
                   {{ !element[column.key] ? 'check_circle' : 'cancel' }}

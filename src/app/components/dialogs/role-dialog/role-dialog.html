@@ -12,11 +12,11 @@
             placeholder="Enter role name" disabled/>
           }
           @else {
-              <input matInput [(ngModel)]="formModel.roleName" name="roleName" required autocomplete="off"
+              <input matInput [(ngModel)]="formModel.roleName" name="roleName" required autocomplete="off" minlength="4"
                 placeholder="Enter role name" />
           }
           @if (roleForm.submitted && !formModel.roleName) {
-            <mat-error class="text-danger">Name is required</mat-error>
+            <mat-error class="text-danger">Name is required of 4 characters</mat-error>
           }
         </mat-form-field>
       </div>

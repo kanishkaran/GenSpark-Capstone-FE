@@ -46,7 +46,7 @@ export class DataTable implements OnInit {
   @Input() loading = false;
   @Input() showSearch = true;
   @Input() isAdmin = false;
-
+  @Input() disableAdd: boolean = false;
   @Output() queryChanged = new EventEmitter<QueryParams>();
   @Output() addClicked = new EventEmitter<void>();
 

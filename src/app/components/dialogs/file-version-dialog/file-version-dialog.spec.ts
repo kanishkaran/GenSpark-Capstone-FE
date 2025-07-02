@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainLayoutComponent } from './nav';
+import { FileVersionDialog } from './file-version-dialog';
 
-describe('Nav', () => {
-  let component: MainLayoutComponent;
-  let fixture: ComponentFixture<MainLayoutComponent>;
+describe('FileVersionDialog', () => {
+  let component: FileVersionDialog;
+  let fixture: ComponentFixture<FileVersionDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MainLayoutComponent]
+      imports: [FileVersionDialog]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MainLayoutComponent);
+    fixture = TestBed.createComponent(FileVersionDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
