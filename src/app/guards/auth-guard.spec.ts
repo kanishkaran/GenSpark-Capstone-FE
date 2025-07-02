@@ -1,45 +1,63 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthGaurd } from './auth-guard';
-import { RouterTestingModule } from '@angular/router/testing';
 
-describe('AuthGuard', () => {
+describe('AuthGaurd', () => {
   let guard: AuthGaurd;
-  let router: Router;
-  let route: ActivatedRouteSnapshot;
-  let state: RouterStateSnapshot;
+  let mockAuthService: any;
+  let mockRouter: any;
+
+  const dummyRoute = {} as ActivatedRouteSnapshot;
+  const dummyState = {} as RouterStateSnapshot;
 
   beforeEach(() => {
+    mockAuthService = {
+      isAuthenticated: jasmine.createSpy()
+    };
+
+    mockRouter = {
+      navigate: jasmine.createSpy()
+    };
+
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([])],
-      providers: [AuthGaurd]
+      providers: [
+        AuthGaurd,
+        { provide: AuthService, useValue: mockAuthService },
+        { provide: Router, useValue: mockRouter }
+      ]
     });
 
     guard = TestBed.inject(AuthGaurd);
-    router = TestBed.inject(Router);
-
-    route = {} as ActivatedRouteSnapshot;
-    state = { url: '/protected' } as RouterStateSnapshot;
   });
 
-  afterEach(() => {
-    localStorage.clear();
-  });
+ 
+  it('should return true if user is authenticated', () => {
+    mockAuthService.isAuthenticated.and.returnValue(true);
 
-  it('should allow activation if token exists', () => {
-    localStorage.setItem('token', 'fake-token');
-    const result = guard.canActivate(route, state);
+    const result = guard.canActivate(dummyRoute, dummyState);
+
     expect(result).toBeTrue();
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
   });
 
-  it('should block activation and redirect if token is missing', () => {
-    spyOn(router, 'navigate');
-    localStorage.removeItem('token');
+  it('should return false and redirect if user is not authenticated', () => {
+    mockAuthService.isAuthenticated.and.returnValue(false);
 
-    const result = guard.canActivate(route, state);
+    const result = guard.canActivate(dummyRoute, dummyState);
 
     expect(result).toBeFalse();
-    expect(router.navigate).toHaveBeenCalledWith(['login']);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
+  });
+
+ 
+  it('should call authService.isAuthenticated', () => {
+    mockAuthService.isAuthenticated.and.returnValue(true);
+
+    guard.canActivate(dummyRoute, dummyState);
+
+    expect(mockAuthService.isAuthenticated).toHaveBeenCalledTimes(1);
   });
 });

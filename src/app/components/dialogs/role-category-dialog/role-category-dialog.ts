@@ -4,7 +4,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { CreateRoleCategoryRequest } from '../../../models/roleCategoryModel';
 import { Role } from '../../../models/roleModel';
 import { Category } from '../../../models/categoryModel';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';

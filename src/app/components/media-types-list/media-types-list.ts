@@ -175,12 +175,4 @@ export class MediaTypesList implements OnInit {
     })
   }
 
-  // onFormSubmit() {
-  //   if (this.isEditMode && this.editTypeId){
-
-  //   }
-  //   else {
-
-  // }
-
 }

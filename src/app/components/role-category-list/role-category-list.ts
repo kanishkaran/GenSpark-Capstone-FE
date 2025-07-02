@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Sort } from '@angular/material/sort';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
