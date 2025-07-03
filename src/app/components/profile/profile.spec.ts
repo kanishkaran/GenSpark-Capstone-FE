@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 describe('ProfileComponent', () => {
   let component: Profile;
   let fixture: ComponentFixture<Profile>;
+  let authStub: AuthService
 
   const mockEmployeeService = {
     getEmployeeByEmail: jasmine.createSpy(),
@@ -52,6 +53,7 @@ describe('ProfileComponent', () => {
         { provide: ActivatedRoute, useValue: mockActivatedRoute }
       ]
     }).compileComponents();
+    authStub = TestBed.inject(AuthService);
   });
 
 
@@ -76,7 +78,6 @@ describe('ProfileComponent', () => {
 
 
   it('should show warning if not admin and not same user', () => {
-    const authStub = TestBed.inject(AuthService);
     spyOn(authStub, 'isAdmin').and.returnValue(false);
     component = TestBed.createComponent(Profile).componentInstance;
     component.userName = 'other@example.com';

@@ -19,6 +19,7 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { FileSummaryService } from './services/fileSummary.service';
 import { AuthGaurd } from './guards/auth-guard';
 import { AdminGuard } from './guards/admin-guard';
+import { LoginGuard } from './guards/login-guard-guard';
 
 
 export const appConfig: ApplicationConfig = {
@@ -42,6 +43,7 @@ export const appConfig: ApplicationConfig = {
     EmployeeService,
     FileSummaryService,
     AuthGaurd,
-    AdminGuard
+    AdminGuard,
+    LoginGuard
   ]
 };

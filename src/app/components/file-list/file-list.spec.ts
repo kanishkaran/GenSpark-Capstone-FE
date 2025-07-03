@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { FileList } from './file-list';
 import { FileArchiveService } from '../../services/fileUpload.service';
 import { FileVersionService } from '../../services/fileVersion.service';
 import { NotificationService } from '../../services/notification.service';
 import { AuthService } from '../../services/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { FileSummaryService } from '../../services/fileSummary.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 
 describe('FileList Component', () => {
   let component: FileList;
@@ -27,16 +29,22 @@ describe('FileList Component', () => {
   const fileVersionService = jasmine.createSpyObj('FileVersionService', ['getByArchiveId']);
   const notificationService = jasmine.createSpyObj('NotificationService', ['showSuccess', 'showError', 'showInfo']);
   const authService = jasmine.createSpyObj('AuthService', ['isAdmin']);
+  const fileSummaryService = jasmine.createSpyObj('FileSummaryService', ['semanticSearch']);
   const dialog = jasmine.createSpyObj('MatDialog', ['open']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FileList],
+      imports: [
+        FileList,
+        MatDialogModule,
+        CommonModule
+      ],
       providers: [
         { provide: FileArchiveService, useValue: fileArchiveService },
         { provide: FileVersionService, useValue: fileVersionService },
         { provide: NotificationService, useValue: notificationService },
         { provide: AuthService, useValue: authService },
+        { provide: FileSummaryService, useValue: fileSummaryService },
         { provide: MatDialog, useValue: dialog }
       ]
     }).compileComponents();
@@ -70,7 +78,6 @@ describe('FileList Component', () => {
     expect(component.totalCount).toBe(1);
   });
 
-
   it('should get file versions and open dialog', () => {
     fileVersionService.getByArchiveId.and.returnValue(of({ data: { $values: mockVersions } }));
     dialog.open.and.returnValue(mockDialogRef as any);
@@ -88,7 +95,6 @@ describe('FileList Component', () => {
 
     expect(notificationService.showInfo).toHaveBeenCalledWith('No versions available for this file.');
   });
-
 
   it('should update query on change', () => {
     fileArchiveService.getAll.and.returnValue(of({ data: { data: { $values: [] }, totalRecords: 0 } }));

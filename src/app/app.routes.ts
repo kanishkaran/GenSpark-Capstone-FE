@@ -15,11 +15,12 @@ import { UserCategory } from './components/user-category/user-category';
 import { AuthGaurd } from './guards/auth-guard';
 import { AdminGuard } from './guards/admin-guard';
 import { FileList } from './components/file-list/file-list';
+import { LoginGuard } from './guards/login-guard-guard';
 
 
 
 export const routes: Routes = [
-  { path: '', component: Login },
+  { path: '', component: Login , canActivate: [LoginGuard]},
   {
     path: 'home',
     component: MainLayoutComponent,
@@ -31,7 +32,8 @@ export const routes: Routes = [
       { path: 'user-category', component: UserCategory },
       { path: 'category', component: CategoryList },
       { path: 'mediaType', component: MediaTypesList },
-      {path: 'admin', 
+      {
+        path: 'admin',
         canActivate: [AdminGuard],
         children: [
           { path: 'role', component: RoleList },
@@ -40,7 +42,8 @@ export const routes: Routes = [
           { path: 'files', component: FileList },
           { path: 'users/:uname', component: Profile },
           { path: 'access', component: AccessList },
-      ]},
+        ]
+      },
       { path: 'profile/:uname', component: Profile },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
